@@ -24,3 +24,134 @@ a {
     background: black;
   }
 }
+
+.contain{
+  background: white;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar{
+  background: rgb(250, 238, 222);    
+  height: 717px;
+  padding: 20px;
+}
+
+.sidebar-menu{
+  padding: 50px;
+  margin-top: -10px;
+}
+
+.head-bar{
+  background: #82ffa1;
+  height: 80px;
+  width: 1033px;
+  margin-left: 20px;
+  margin-top: 30px;
+  border-radius: 4px;
+  padding: 22px;
+  display: flex;
+
+}
+
+
+.footer-bar{
+  background: #4c4c4c;
+  height: 115px;
+  width: 128.7%;
+  margin-top: 170px;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  padding: 40px;
+}
+
+.selected{
+  width: 200px;
+  height: 40px;
+  background: rgb(135, 135, 135);
+  border-radius: 10px;
+  padding-top: 5px;
+}
+
+.exit{
+  margin-top: 45%;
+}
+
+.user{
+  margin-left: 10%;
+  margin-top: 5px;
+}
+.corner{
+  margin-left: 40%;
+  margin-top: 5px;
+
+}
+
+.botoes{
+  margin-left: 60%;
+  display: flex;
+}
+
+.btn-salvar{
+  width: 180px;
+  margin-left: 10%;
+}
+
+.btn-voltar{
+  width: 180px;
+}
+.content{
+  width: 1000px;
+    margin-left: 30px;
+}
+.titulo{
+  margin-top:20px;
+  margin-left: 10px;
+}
+
+.poupanca-box{
+  width: 90%;
+  height: 200px;
+  box-shadow: black 1px 1px 4px;
+  margin-left: 50px;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+.total-poupanca{
+  text-align: center;
+  padding-top: 10px;
+}
+.input-poupanca{
+  width: 350px !important;
+  margin-left: 30%;
+}
+.btn-adicionar{
+  width: 180px;
+  margin-left: 40%;
+}
+
+.menu-itens{
+  margin-left: 55px;
+}
+.btn-cadastrar{
+  margin-left: 40px;
+}
+
+.titulo-despesas{
+  margin-top:20px;
+  margin-left: 10px;
+  width: 120%;
+}
+.botoes-despesas{
+  margin-left: 70%;
+  display: flex;
+}
+.tabela{
+  margin-top: 6%;
+}
+.perfil{
+  height: 180px;
+  width: 180px;
+  border-radius: 50%
+}
