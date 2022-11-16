@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoneyBill, faSignOut, faSliders, faUsd } from '@fortawesome/free-solid-svg-icons'
 import { faHouse } from '@fortawesome/free-solid-svg-icons'
+import router from 'next/router';
 
 
 export default function Sidebar() {
@@ -14,20 +15,20 @@ export default function Sidebar() {
                     <b style={{ marginLeft: "15%" }}>Layal Al Wanni</b>
                 </div>
                 <div style={{ marginTop: "15%" }}>
-                    <div className="selected">
+                    <div onClick={() => router.push('/dashboard')} className="selected">
                         <p className='menu-itens'>
                             <FontAwesomeIcon icon={faHouse} />
                             Dashboard
                         </p>
                     </div>
-                    <div>
+                    <div onClick={() => router.push('/despesas')}>
                         <i className="fa fa-usd"></i>
                         <p className='menu-itens'>
                             <FontAwesomeIcon icon={faUsd} />
                             Despesas
                         </p>
                     </div>
-                    <div>
+                    <div onClick={() => router.push('/poupanca')}>
                         <i className="fa fa-money-bill"></i>
                         <p className='menu-itens'>
                             <FontAwesomeIcon icon={faMoneyBill} />

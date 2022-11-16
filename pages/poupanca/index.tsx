@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Sidebar from '../../components/sidebar/sidebar';
 import Header from '../../components/head/head';
 import Footer from '../../components/footer/footer';
+import router from 'next/router';
 
 export default function Poupanca() {
     return (
@@ -14,7 +15,7 @@ export default function Poupanca() {
                         <div className='titulo'>
                             <h3>Poupança</h3>
                             <div className='botoes'>
-                                <button className='btn btn-secondary btn-voltar'>Voltar</button>
+                                <button className='btn btn-secondary btn-voltar' onClick={() => router.push('/dashboard')}>Voltar</button>
                                 <button className='btn btn-secondary btn-salvar'>Salvar</button>
                             </div>
                             <div className='poupanca-box'>

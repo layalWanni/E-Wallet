@@ -4,9 +4,11 @@ import Header from '../../components/head/head';
 import Footer from '../../components/footer/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router'
 
 
 export default function Despesas() {
+    const router = useRouter()
     return (
         <>
             <div className='contain col-md-12'>
@@ -17,7 +19,9 @@ export default function Despesas() {
                         <div className='titulo-despesas'>
                             <h3>Despesas</h3>
                             <div className='botoes-despesas'>
-                                <button className='btn btn-secondary btn-cadastrar'><FontAwesomeIcon icon={faPlus} /> Cadastrar Despesa</button>
+                                <button className='btn btn-secondary btn-cadastrar'
+                                    onClick={() => router.push('/despesas/criar')}
+                                ><FontAwesomeIcon icon={faPlus} /> Cadastrar Despesa</button>
                             </div>
 
                             <div className=''>

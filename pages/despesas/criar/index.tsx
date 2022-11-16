@@ -4,6 +4,7 @@ import Header from '../../../components/head/head';
 import Footer from '../../../components/footer/footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import router from 'next/router';
 
 
 export default function CadastrarDespesas() {
@@ -18,7 +19,7 @@ export default function CadastrarDespesas() {
                             <h3>Despesas Cadastro</h3>
                             <div className='botoes-despesas'>
                                 <button className='btn btn-success btn-cadastrar' style={{ marginRight: "30px" }}><FontAwesomeIcon icon={faPlus} /> Salvar</button>
-                                <button className='btn btn-warning btn-voltar' style={{ width: "100px" }}>Voltar</button>
+                                <button className='btn btn-warning btn-voltar' onClick={() => router.push('/despesas')} style={{ width: "100px" }}>Voltar</button>
 
                             </div>
 
