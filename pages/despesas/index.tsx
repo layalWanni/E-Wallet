@@ -17,7 +17,7 @@ export default function Despesas() {
                         <div className='titulo-despesas'>
                             <h3>Despesas</h3>
                             <div className='botoes-despesas'>
-                                <button className='btn btn-secondary btn-cadastrar'><FontAwesomeIcon icon={faPlus} />Cadastrar Despesa</button>
+                                <button className='btn btn-secondary btn-cadastrar'><FontAwesomeIcon icon={faPlus} /> Cadastrar Despesa</button>
                             </div>
 
                             <div className=''>
