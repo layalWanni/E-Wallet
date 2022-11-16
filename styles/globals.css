@@ -133,6 +133,7 @@ a {
 
 .menu-itens{
   margin-left: 55px;
+  cursor: pointer;
 }
 .btn-cadastrar{
   margin-left: 40px;

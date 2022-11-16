@@ -21,7 +21,7 @@ export default function Dashboard() {
                                 <button className='btn btn-secondary btn-cadastrar' onClick={() => router.push('/despesas')}><FontAwesomeIcon icon={faPlus} /> Despesas</button>
                             </div>
 
-                            <div className='' style={{ height: "270px" }}>
+                            <div className='' style={{ height: "226px" }}>
                                 <div className="card-container col-md-12">
                                     <div className="diviser"></div>
                                     <div className="head-bar-card col-md-3" style={{ background: "#d1f2ee" }}>
