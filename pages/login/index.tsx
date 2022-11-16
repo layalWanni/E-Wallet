@@ -14,11 +14,11 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 // Assets
-import signInImage from "assets/img/signInImage.png";
+import { useRouter } from 'next/router'
 
 function SignIn() {
     // Chakra color mode
-    const titleColor = useColorModeValue("teal.300", "teal.200");
+    const router = useRouter()
     const textColor = useColorModeValue("gray.400", "white");
     return (
         <Flex position='relative' mb='40px'>
@@ -79,6 +79,7 @@ function SignIn() {
                             />
                           
                             <Button
+                            onClick={() => router.push('/dashboard')}
                                 fontSize='10px'
                                 type='submit'
                                 bg='#191970'
@@ -105,7 +106,7 @@ function SignIn() {
                             <Text color='#FEAF00' fontWeight='medium'>
                             Não tem uma conta?
                                 <Link color='#191970' as='span' ms='5px' fontWeight='bold'>
-                                    Sign Up
+                                    cadastro
                                 </Link>
                             </Text>
                         </Flex>
