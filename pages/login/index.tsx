@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // Chakra imports
 import {
     Box,
@@ -9,9 +9,10 @@ import {
     Heading,
     Input,
     Link,
-    Switch,
+
     Text,
     useColorModeValue,
+    useToast,
 } from "@chakra-ui/react";
 // Assets
 import { useRouter } from 'next/router';
@@ -19,10 +20,22 @@ import { useRouter } from 'next/router';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import fakeFetchApi from "../api";
 
-const singInScema = yup.object().shape({ email: yup.string().required('Email obrigatório').email('Email inválido'), senha: yup.string().required('Senha obrigatória'), })
 
-interface SigInData { email: string; password: string; }
+
+interface SigInData {
+    email: string;
+    password: string;
+}
+
+const singInScema =
+    yup.object().shape({
+        email: yup.string().required('Email obrigatório').email('Email inválido'),
+        senha: yup.string().required('Senha obrigatória'),
+    })
+
+const useUser = () => ({ user: null, loading: false });
 
 export default function SignIn() {
     const {
@@ -37,12 +50,86 @@ export default function SignIn() {
     const textColor = useColorModeValue("gray.400", "white");
     const [num, setNum] = useState('');
 
-    const handleNumChange = event => {
-      const limit = 4;
-      setNum(event.target.value.slice(0, limit));
-    };
-  
-    console.log(num);
+
+
+    const { user, loading } = useUser()
+
+    const toast = useToast();
+
+    const regexEmail =
+        // eslint-disable-next-line no-useless-escape
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regexPass = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+
+    const [email, setEmail] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    const [password, setPassword] = useState("");
+
+
+    useEffect(() => {
+        if (localStorage.getItem("isLogged")) {
+            router.push('/login')
+        }
+        if (!(user || loading)) {
+            router.push('/login')
+        }
+        // eslint-disable-next-line
+    }, [user, loading]);
+
+    function handleLogin(event) {
+        try {
+            event.preventDefault();
+            if (regexEmail.test(email) && regexPass.test(password)) {
+                const response = fakeFetchApi({ email, password });
+                if (response.status === 200) {
+                    localStorage.setItem("isLogged", "true");
+                    router.push('/wallet')
+                } else {
+                    toast({
+                        title: response.message,
+                        status: "error",
+                        position: "top-right",
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                }
+            } else {
+                if (!regexEmail.test(email)) {
+                    let input = document.getElementById("email-input");
+                    toast({
+                        title: "Erro no Campo E-mail",
+                        description: "padrão Incorreto, Example: (example@gmail.com)",
+                        status: "error",
+                        position: "top-right",
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                }
+                if (!regexPass.test(password)) {
+                    let input = document.getElementById("password-input");
+                    toast({
+                        title: "Erro no Campo de Senha, padrão Incorreto",
+                        description: "Exemple: a-z, A-Z, 0-9, !@#$*, Mais de 8 Caracteres.",
+                        position: "top-right",
+                        status: "error",
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                }
+            }
+        } catch (err) {
+            toast({
+                title: "Erro ao fazer login !!!",
+                status: "error",
+                position: "top-right",
+                duration: 3000,
+                isClosable: true,
+            });
+        }
+    }
+
+
+
 
     return (
         <Flex position='relative' mb='40px' >
@@ -91,7 +178,8 @@ export default function SignIn() {
                                     placeholder='liomanjate@gmail.com'
                                     size='lg'
                                     {...register("email")}
-                                    
+                                    onChange={(event) => setEmail(event.target.value)}
+
                                 />
                                 <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
                                     Senha
@@ -101,14 +189,14 @@ export default function SignIn() {
                                     borderRadius={5}
                                     mb='36px'
                                     fontSize='sm'
-                                    type='password'
                                     placeholder='digite a sua senha'
                                     size='lg'
                                     required
                                     {...register("senha")}
                                     min="1"
                                     max="5"
-                                    onChange={handleNumChange}
+                                    type={showPassword ? "text" : "password"}
+                                    onChange={(event) => setPassword(event.target.value)}
 
                                 />
 
