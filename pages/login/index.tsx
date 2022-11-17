@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 // Chakra imports
 import {
     Box,
@@ -9,127 +9,49 @@ import {
     Heading,
     Input,
     Link,
-
     Text,
     useColorModeValue,
-    useToast,
 } from "@chakra-ui/react";
-// Assets
 import { useRouter } from 'next/router';
-
-import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
-import fakeFetchApi from "../api";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useContext } from "react";
+import { AuthContext } from "../../src/contaxts/AuthContext";
 
-
-
-interface SigInData {
+type SignInFormData = {
     email: string;
-    password: string;
-}
+    senha: string;
+};
 
-const singInScema =
-    yup.object().shape({
-        email: yup.string().required('Email obrigatório').email('Email inválido'),
-        senha: yup.string().required('Senha obrigatória'),
-    })
+const signInFormSchema = yup.object().shape({
+    email: yup
+        .string()
+        .required("E-mail obrigatório!")
+        .email("Insira um e-mail válido!"),
+    senha: yup.string().required("Senha obrigatória!"),
+});
 
-const useUser = () => ({ user: null, loading: false });
 
 export default function SignIn() {
-    const {
-        formState: { errors },
-        register,
-        handleSubmit, } = useForm({
-            resolver: yupResolver(singInScema)
-        });
+    const { signIn, isAuthenticated } = useContext(AuthContext);
 
-    // Chakra color mode
+    const { register, handleSubmit, formState } = useForm({
+        resolver: yupResolver(signInFormSchema),
+    });
+
+    const { errors } = formState;
+
+    const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await signIn(values);
+        console.log(values);
+    };
+
+
+
     const router = useRouter()
     const textColor = useColorModeValue("gray.400", "white");
-    const [num, setNum] = useState('');
-
-
-
-    const { user, loading } = useUser()
-
-    const toast = useToast();
-
-    const regexEmail =
-        // eslint-disable-next-line no-useless-escape
-        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const regexPass = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
-
-    const [email, setEmail] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [password, setPassword] = useState("");
-
-
-    useEffect(() => {
-        if (localStorage.getItem("isLogged")) {
-            router.push('/login')
-        }
-        if (!(user || loading)) {
-            router.push('/login')
-        }
-        // eslint-disable-next-line
-    }, [user, loading]);
-
-    function handleLogin(event) {
-        try {
-            event.preventDefault();
-            if (regexEmail.test(email) && regexPass.test(password)) {
-                const response = fakeFetchApi({ email, password });
-                if (response.status === 200) {
-                    localStorage.setItem("isLogged", "true");
-                    router.push('/wallet')
-                } else {
-                    toast({
-                        title: response.message,
-                        status: "error",
-                        position: "top-right",
-                        duration: 3000,
-                        isClosable: true,
-                    });
-                }
-            } else {
-                if (!regexEmail.test(email)) {
-                    let input = document.getElementById("email-input");
-                    toast({
-                        title: "Erro no Campo E-mail",
-                        description: "padrão Incorreto, Example: (example@gmail.com)",
-                        status: "error",
-                        position: "top-right",
-                        duration: 3000,
-                        isClosable: true,
-                    });
-                }
-                if (!regexPass.test(password)) {
-                    let input = document.getElementById("password-input");
-                    toast({
-                        title: "Erro no Campo de Senha, padrão Incorreto",
-                        description: "Exemple: a-z, A-Z, 0-9, !@#$*, Mais de 8 Caracteres.",
-                        position: "top-right",
-                        status: "error",
-                        duration: 3000,
-                        isClosable: true,
-                    });
-                }
-            }
-        } catch (err) {
-            toast({
-                title: "Erro ao fazer login !!!",
-                status: "error",
-                position: "top-right",
-                duration: 3000,
-                isClosable: true,
-            });
-        }
-    }
-
-
-
 
     return (
         <Flex position='relative' mb='40px' >
@@ -140,12 +62,15 @@ export default function SignIn() {
                 mx='auto'
                 justifyContent='space-between'
                 mb='30px'
-                pt={{ sm: "100px", md: "0px" }}>
+                pt={{ sm: "100px", md: "0px" }}
+                onSubmit={handleSubmit(handleSignIn)}
+            >
                 <Flex
                     alignItems='center'
                     justifyContent='start'
                     style={{ userSelect: "none" }}
-                    w={{ base: "100%", md: "50%", lg: "42%" }}>
+                    w={{ base: "100%", md: "50%", lg: "42%" }}
+                >
                     <Flex
 
                         direction='column'
@@ -177,9 +102,8 @@ export default function SignIn() {
                                     type='text'
                                     placeholder='liomanjate@gmail.com'
                                     size='lg'
+                                    error={errors.email}
                                     {...register("email")}
-                                    onChange={(event) => setEmail(event.target.value)}
-
                                 />
                                 <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
                                     Senha
@@ -189,19 +113,17 @@ export default function SignIn() {
                                     borderRadius={5}
                                     mb='36px'
                                     fontSize='sm'
+                                    type='password'
                                     placeholder='digite a sua senha'
                                     size='lg'
                                     required
+                                    error={errors.senha}
                                     {...register("senha")}
-                                    min="1"
-                                    max="5"
-                                    type={showPassword ? "text" : "password"}
-                                    onChange={(event) => setPassword(event.target.value)}
-
                                 />
 
                                 <Button
                                     onClick={() => router.push('/dashboard')}
+                                    isLoading={formState.isSubmitting}
                                     fontSize='10px'
                                     type='submit'
                                     bg='#191970'
@@ -245,7 +167,6 @@ export default function SignIn() {
                     position='absolute'
                     right='0px'>
                     <Box
-                        bgImage={'https://static-cse.canva.com/blob/759754/IMAGE1.jpg'}
                         w='100%'
                         h='100%'
                         bgSize='cover'
