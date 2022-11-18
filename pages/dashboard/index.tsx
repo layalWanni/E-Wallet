@@ -3,10 +3,11 @@ import dynamic from "next/dynamic";
 import Footer from "../../src/components/footer";
 
 
+
+
 import WithSubnavigation from "../../src/components/navigation";
 import SimpleSidebar from "../../src/components/schiBar";
-import { Sidebar } from "../../src/components/sliderBar";
-;
+
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
 });
@@ -106,7 +107,7 @@ export default function Dashboard() {
             </Box>
           </SimpleGrid>
         </Flex>
-       
+    
       </Flex>
       <Footer />
     </SimpleSidebar>
