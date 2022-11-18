@@ -1,6 +1,10 @@
 import { Box, Flex, SimpleGrid, Text, theme } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { Header } from "../../src/components/header";
+import Footer from "../../src/components/footer";
+
+
+import WithSubnavigation from "../../src/components/navigation";
+import SimpleSidebar from "../../src/components/schiBar";
 import { Sidebar } from "../../src/components/sliderBar";
 ;
 const Chart = dynamic(() => import("react-apexcharts"), {
@@ -56,47 +60,56 @@ export default function Dashboard() {
     },
   };
 
-  const series = [{ name: "series1", data: [101, 120, 10, 208, 154, 204] }];
+  const series = [{ name: "Despesas", data: [101, 120, 10, 208, 154, 204] }];
+  
 
   return (
-    <Flex direction="column" h="100vh">
-      <Header />
+    <SimpleSidebar>
+      <WithSubnavigation />
+      <Flex direction="column" h="100vh">
+        {/* <Header /> */}
 
-      <Flex w="100%" my="6" maxW={1480} mx="auto" px="6">
-        <Sidebar />
+        <Flex w="100%" my="6" maxW={"100%"} mx="auto" px="6">
+          {/* <Sidebar /> */}
 
-        <SimpleGrid
-          flex="1"
-          gap="4"
-          minChildWidth="320px"
-          alignContent="flex-start"
-        >
-          <Box p={["6", "8"]} bg="#E2EAF3" borderRadius={8} pb="4">
-            <Text fontSize="lg" mb="4" color='#FFA500' fontWeight={'bold'} fontFamily={'roboto'}>
-              Despesas
-            </Text>
-            <Chart
-              type="area"
-              width="100%"
-              height="160"
-              options={options}
-              series={series}
-            />
-          </Box>
-          <Box p={["6", "8"]} fontWeight={'bold'} fontFamily={'roboto'} bg="#E2EAF3" borderRadius={8} pb="4" >
-            <Text fontSize="lg" mb="4" color='#0000FF'>
-              Poupança
-            </Text>
-            <Chart
-              type="area"
-              width="100%"
-              height="160"
-              options={options}
-              series={series}
-            />
-          </Box>
-        </SimpleGrid>
+          <SimpleGrid
+            flex="1"
+            gap="4"
+            minChildWidth="320px"
+            alignContent="flex-start"
+            w={'100%'}
+          >
+
+            <Box p={["6", "8"]} fontWeight={'bold'} fontFamily={'roboto'} bg="#E2EAF3" borderRadius={8} pb="2" ml={-5}>
+              <Text fontSize="lg" mb="4" color='#FFA500' fontWeight={'bold'} fontFamily={'roboto'}>
+                Despesas
+              </Text>
+              <Chart
+                type="area"
+                width="100%"
+                height="160"
+                options={options}
+                series={series}
+              />
+            </Box>
+            <Box p={["6", "8"]} fontWeight={'bold'} fontFamily={'roboto'} bg="#E2EAF3" borderRadius={8} pb="2" mr={-5}>
+              <Text fontSize="lg" mb="4" color='#0000FF'>
+                Poupança
+              </Text>
+              <Chart
+                type="area"
+                width="100%"
+                height="160"
+                options={options}
+                series={series}
+              />
+            </Box>
+          </SimpleGrid>
+        </Flex>
+       
       </Flex>
-    </Flex>
+      <Footer />
+    </SimpleSidebar>
+
   );
 }
