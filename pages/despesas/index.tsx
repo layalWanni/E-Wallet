@@ -80,24 +80,24 @@ export default function ListaDespesas() {
                     </Box>
 
                 </Flex>
-                <Box flex="1" bg={"#D9D9D9"} borderRadius={10} p="2">
-
-
-                    <Table colorScheme="whiteAlpha">
+                <Box flex="1" bg={"#D9D9D9"} borderRadius={10} p="1">
+                    <Table colorScheme="whiteAlpha" ml={5}>
                         <Tbody>
-                            <Pagination
-                                mt={5}
-                                total={20}
-                                paginationProps={{ display: "flex" }}
-                                colorScheme="#ACACAC"
-                                rounded="4"
-                                size="sm"
-                            />
+                            <Center mt={5}>
+                                <Pagination
+                                    total={60}
+                                    paginationProps={{ display: "flex" }}
+                                    colorScheme="blackAlpha.900"
+                                    rounded="4"
+                                    size="sm"
+                                />
+                            </Center>
 
-                            <Td m={500}>
+                            <Td >
 
                                 <Button
-                                    ml={5}
+                                
+                                    ml={2}
                                     as="a"
                                     size="sm"
                                     fontSize="sm"
@@ -108,7 +108,7 @@ export default function ListaDespesas() {
                                 </Button>
 
                                 <Button
-                                    mr={5}
+                                    mr={1}
                                     as="a"
                                     size="sm"
                                     fontSize="sm"
@@ -129,7 +129,7 @@ export default function ListaDespesas() {
                         </Tbody>
                     </Table>
                 </Box>
-                <Box w="100%" mt={10}>
+                <Box w="100%" mt={"13%"}>
                     <Footer />
                 </Box>
 
