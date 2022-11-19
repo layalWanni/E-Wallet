@@ -96,7 +96,7 @@ export default function ListaDespesas() {
                             <Td >
 
                                 <Button
-                                
+
                                     ml={2}
                                     as="a"
                                     size="sm"
