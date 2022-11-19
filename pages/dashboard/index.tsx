@@ -1,6 +1,7 @@
 import { Box, Flex, SimpleGrid, Text, theme } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import Footer from "../../src/components/footer";
+import Grafic from "../../src/components/grafic";
 
 
 
@@ -24,7 +25,7 @@ export default function Dashboard() {
       foreColor: theme.colors.gray[500],
     },
     grid: {
-      show: false,
+      show: true,
     },
     dataLabels: {
       enabled: false,
@@ -62,7 +63,7 @@ export default function Dashboard() {
   };
 
   const series = [{ name: "Despesas", data: [101, 120, 10, 208, 154, 204] }];
-  
+
 
   return (
     <SimpleSidebar>
@@ -98,16 +99,17 @@ export default function Dashboard() {
                 Poupança
               </Text>
               <Chart
-                type="area"
+                type="line"
                 width="100%"
                 height="160"
                 options={options}
                 series={series}
+                
               />
             </Box>
           </SimpleGrid>
         </Flex>
-    
+        <Grafic />
       </Flex>
       <Footer />
     </SimpleSidebar>
