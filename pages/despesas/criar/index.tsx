@@ -4,6 +4,7 @@ import WithSubnavigation from "../../../src/components/navigation";
 import SimpleSidebar from "../../../src/components/schiBar";
 
 
+
 export default function AdicionarDespesa() {
     return (
         <div><SimpleSidebar>
@@ -56,6 +57,7 @@ export default function AdicionarDespesa() {
                                 bg="#DFE3E8"
                                 placeholder="valor"
                                 type="Number"
+                                
                             
                             />
                         </SimpleGrid>
