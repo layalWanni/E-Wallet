@@ -43,8 +43,6 @@ export default function SignIn() {
     const { errors } = formState;
 
     const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-        await signIn(values);
         console.log(values);
     };
 
@@ -122,7 +120,6 @@ export default function SignIn() {
                                 />
 
                                 <Button
-                                    onClick={() => router.push('/dashboard')}
                                     isLoading={formState.isSubmitting}
                                     fontSize='10px'
                                     type='submit'

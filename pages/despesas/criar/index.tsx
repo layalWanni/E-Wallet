@@ -1,11 +1,49 @@
-import { Box, Button, Divider, Flex, Heading, HStack, Input, Select, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, Heading, HStack, Input, Select, SimpleGrid, Text, Toast, VStack } from "@chakra-ui/react";
+import { useEffect } from "react";
+import axios from "axios";
 import Footer from "../../../src/components/footer";
 import WithSubnavigation from "../../../src/components/navigation";
 import SimpleSidebar from "../../../src/components/schiBar";
+import { useDispatch } from "react-redux";
+import  {changeCurrencies} from '../../../store/currenciesData'
 
-
+ 
 
 export default function AdicionarDespesa() {
+
+    function trataDadosApi(data){
+        var currencies = {};
+        Object.keys(data).map((currencyKey) => (
+            currencies[currencyKey] = {
+              code: data[currencyKey].code,
+              bid: parseFloat(data[currencyKey].bid),
+              label: `${
+                String(data[currencyKey].name).split("/")[0]
+              } ( ${currencyKey} )  `,
+            }
+          )
+        )
+        return currencies;
+    }
+    const dispatch = useDispatch();
+    async function getCurrencies() {
+        try {
+          const response = await axios.get("https://economia.awesomeapi.com.br/json/all");
+          if (response.status === 200){
+            console.log("passou")
+            console.log(response.data)
+            dispatch(changeCurrencies(trataDadosApi(response.data)));
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+
+    useEffect(()=>{
+        getCurrencies();
+    }, [])
+
     return (
         <div><SimpleSidebar>
             <WithSubnavigation />
