@@ -61,7 +61,7 @@ export default function SignIn() {
                 justifyContent='space-between'
                 mb='30px'
                 pt={{ sm: "100px", md: "0px" }}
-                onSubmit={handleSubmit(handleSignIn)}
+     
             >
                 <Flex
                     alignItems='center'
@@ -100,7 +100,7 @@ export default function SignIn() {
                                     type='text'
                                     placeholder='liomanjate@gmail.com'
                                     size='lg'
-                                    error={errors.email}
+                               
                                     {...register("email")}
                                 />
                                 <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
@@ -115,7 +115,7 @@ export default function SignIn() {
                                     placeholder='digite a sua senha'
                                     size='lg'
                                     required
-                                    error={errors.senha}
+                              
                                     {...register("senha")}
                                 />
 
