@@ -29,16 +29,18 @@ import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 
 import logo from '../../../public/layal.jpg';
+import router from 'next/router';
 
 interface LinkItemProps {
     name: string;
     icon: IconType;
+    link: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-    { name: 'Dashboard', icon: FiHome },
-    { name: 'Gastos', icon: FiTrendingUp },
-    { name: 'Despesas', icon: FiCompass },
-    { name: 'Configurações', icon: FiSettings },
+    { name: 'Dashboard', icon: FiHome, link: 'dashboard' },
+    { name: 'Despesas', icon: FiTrendingUp, link: 'despesas' },
+    { name: 'Poupanca', icon: FiCompass, link: 'poupanca' },
+    { name: 'Configurações', icon: FiSettings, link: '' },
 ];
 
 export default function SimpleSidebar({ children }: { children: ReactNode }) {
@@ -50,7 +52,7 @@ export default function SimpleSidebar({ children }: { children: ReactNode }) {
                 display={{ base: 'none', md: 'block' }}
             />
             <Drawer
-                
+
                 autoFocus={false}
                 isOpen={isOpen}
                 placement="left"
@@ -90,7 +92,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
                 <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
             </Flex>
             {LinkItems.map((link) => (
-                <NavItem key={link.name} icon={link.icon}>
+                <NavItem key={link.name} icon={link.icon} onClick={() => router.push(link.link)}>
                     {link.name}
                 </NavItem>
             ))}
@@ -156,6 +158,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             />
         </Flex>
 
-        
+
     );
 };

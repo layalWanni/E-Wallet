@@ -37,7 +37,7 @@ import {
         }),
       },
   
-      // gerar dados ao iniciar
+
       seeds(server) {
         server.createList("user", 200);
       },

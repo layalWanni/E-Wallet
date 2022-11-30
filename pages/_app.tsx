@@ -1,11 +1,9 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { Provider } from "react-redux";
+import store from "../store/index";
 
-// 1. Import the extendTheme function
-import { extendTheme } from '@chakra-ui/react'
-
-// 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
   brand: {
     900: '#1a365d',
@@ -14,9 +12,10 @@ const colors = {
   },
 }
 
-
 const theme = extendTheme({ colors })
 
+
+
 export default function App({ Component, pageProps }: AppProps) {
-  return  <ChakraProvider theme={theme}><Component {...pageProps} /></ChakraProvider>
+  return <Provider store={store}><ChakraProvider theme={theme}><Component {...pageProps} /></ChakraProvider></Provider>
 }
