@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-// Chakra imports
 import {
     Box,
     Flex,
@@ -13,42 +11,45 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from 'next/router';
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../src/contaxts/AuthContext";
 
-type SignInFormData = {
-    email: string;
-    senha: string;
-};
-
-const signInFormSchema = yup.object().shape({
-    email: yup
-        .string()
-        .required("E-mail obrigatório!")
-        .email("Insira um e-mail válido!"),
-    senha: yup.string().required("Senha obrigatória!"),
-});
+export interface Props {
+    shouldRemember: boolean;
+    onUsernameChange: (email: string) => void;
+    onPasswordChange: (password: string) => void;
+    onSubmit: (email: string, password: string) => void;
+}
 
 
-export default function SignIn() {
-    const { signIn, isAuthenticated } = useContext(AuthContext);
 
-    const { register, handleSubmit, formState } = useForm({
-        resolver: yupResolver(signInFormSchema),
-    });
+export default function SignIn(props: Props) {
 
-    const { errors } = formState;
+    const router = useRouter();
 
-    const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-        console.log(values);
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
+
+    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setEmail(value);
+        props.onUsernameChange(value);
     };
 
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setPassword(value);
+        props.onPasswordChange(value);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        props.onSubmit(email, password);
+    };
+
+    
 
 
-    const router = useRouter()
     const textColor = useColorModeValue("gray.400", "white");
 
     return (
@@ -61,7 +62,7 @@ export default function SignIn() {
                 justifyContent='space-between'
                 mb='30px'
                 pt={{ sm: "100px", md: "0px" }}
-     
+
             >
                 <Flex
                     alignItems='center'
@@ -88,11 +89,12 @@ export default function SignIn() {
                             Seja bem vindo!
                         </Text>
                         <div >
-                            <FormControl >
+                            <FormControl data-testid="login-form" onSubmit={handleSubmit} >
                                 <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
                                     Email
                                 </FormLabel>
                                 <Input
+                                    name="email"
                                     bg='gray.200'
                                     borderRadius={5}
                                     mb='24px'
@@ -100,13 +102,15 @@ export default function SignIn() {
                                     type='text'
                                     placeholder='liomanjate@gmail.com'
                                     size='lg'
-                               
-                                    {...register("email")}
+                                    value={email}
+                                    onChange={handleUsernameChange}
+
                                 />
                                 <FormLabel ms='4px' fontSize='sm' fontWeight='normal'>
                                     Senha
                                 </FormLabel>
                                 <Input
+                                    data-testid="password"
                                     bg='gray.200'
                                     borderRadius={5}
                                     mb='36px'
@@ -115,18 +119,19 @@ export default function SignIn() {
                                     placeholder='digite a sua senha'
                                     size='lg'
                                     required
-                              
-                                    {...register("senha")}
+                                    name="password"
+                                    value={password}
+                                    onChange={handlePasswordChange}
                                 />
 
                                 <Button
-                                    isLoading={formState.isSubmitting}
                                     fontSize='10px'
                                     type='submit'
                                     bg='#191970'
                                     w='100%'
                                     h='45'
                                     mb='20px'
+                                    data-testid="submit"
                                     color='white'
                                     mt='20px'
                                     _hover={{
