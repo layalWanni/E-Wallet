@@ -23,7 +23,7 @@ export interface Props {
 
 
 
-export default function SignIn(props: Props) {
+export default function SignIn() {
 
     const router = useRouter();
 
@@ -33,21 +33,21 @@ export default function SignIn(props: Props) {
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setEmail(value);
-        props.onUsernameChange(value);
+   
     };
 
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setPassword(value);
-        props.onPasswordChange(value);
+       
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        props.onSubmit(email, password);
+   
     };
 
-    
+
 
 
     const textColor = useColorModeValue("gray.400", "white");
@@ -99,7 +99,7 @@ export default function SignIn(props: Props) {
                                     borderRadius={5}
                                     mb='24px'
                                     fontSize='sm'
-                                    type='text'
+                                    type='email'
                                     placeholder='liomanjate@gmail.com'
                                     size='lg'
                                     value={email}
@@ -110,6 +110,7 @@ export default function SignIn(props: Props) {
                                     Senha
                                 </FormLabel>
                                 <Input
+                                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                     data-testid="password"
                                     bg='gray.200'
                                     borderRadius={5}
