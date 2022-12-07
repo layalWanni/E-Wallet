@@ -104,7 +104,7 @@ export default function AdicionarDespesa() {
 
     useEffect(() => {
         getDadosApi();
-    }, [])
+    }, [ getDadosApi])
 
     useEffect(() => {
         if (!despesa.moeda || despesa.moeda === 'REAL') {
