@@ -1,20 +1,24 @@
-import { Box, Button, Divider, Flex, Heading, HStack, Input, Select, SimpleGrid, Text, Toast, useDisclosure, VStack } from "@chakra-ui/react";
+import { Box, Button, Divider, Flex, FormControl, FormLabel, Heading, HStack, Input, Select, SimpleGrid, Stat, StatGroup, StatLabel, StatNumber, Text, Toast, useDisclosure, VStack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
 import Footer from "../../../src/components/footer";
 import WithSubnavigation from "../../../src/components/navigation";
 import SimpleSidebar from "../../../src/components/schiBar";
-import { useDispatch, useSelector } from "react-redux";
-import { changeCurrencies } from '../../../store/currenciesData'
 import { createDespesa } from "../../../store/outcomesSlice";
-import { returnAllTags } from "../../../store/paymentTagSlice";
 import { returnAllPaymentMethods } from "../../../store/paymentMethodSlice";
+import { returnAllTags } from "../../../store/paymentTagSlice";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+import { ArrowForwardIcon } from "@chakra-ui/icons";
+
 
 
 
 
 export default function AdicionarDespesa() {
     const [dadosApi, setDadosApi] = useState({});
+    
     const [valorConvertido, setValorConvertido] = useState(0);
     const [optionsSelectMoeda, setOptionsSelectMoeda] = useState([]);
     const tags = useSelector(returnAllTags);
@@ -24,6 +28,7 @@ export default function AdicionarDespesa() {
     const metodos_pagamento = useSelector(returnAllPaymentMethods);
     const dispatch = useDispatch();
     const { isOpen, onOpen, onClose } = useDisclosure();
+
 
     const [despesa, setDespesa] = useState({
         valor: 0,
@@ -99,7 +104,7 @@ export default function AdicionarDespesa() {
 
     useEffect(() => {
         getDadosApi()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        /
     }, [])
 
     useEffect(() => {
@@ -109,7 +114,7 @@ export default function AdicionarDespesa() {
             var valorCotacao = dadosApi[despesa.moeda].bid.toFixed(2)
             setValorConvertido((despesa.valor * valorCotacao).toFixed(2))
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        
     }, [despesa.valor])
 
     useEffect(() => {
@@ -118,11 +123,8 @@ export default function AdicionarDespesa() {
             setValorConvertido((despesa.valor * valorCotacao).toFixed(2))
         } else if (despesa.moeda === 'REAL' && despesa.valor) {
             setValorConvertido(despesa.valor.toFixed(2))
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [despesa.moeda])
-
-
 
     return (
         <div><SimpleSidebar>
@@ -133,7 +135,7 @@ export default function AdicionarDespesa() {
                 // onSubmit={handleSubmit(criarDespesa)}
                 >
                     <Heading fontSize="lg" fontWeight="normal">
-                        <Text color="#000000" mb={-10} fontWeight={'bold'}>
+                        <Text color="#000000" mb={-10} fontWeight={'bold'} onClick={adicionarDespesa}>
                             Adicionar Despesas
                         </Text>
 
@@ -143,13 +145,13 @@ export default function AdicionarDespesa() {
                                 bg="#808080"
                                 ml="4"
                             >
-                                <Text color="whiteAlpha.900" onClick={onClose}>
+                                <Text color="whiteAlpha.900">
                                     cancelar
                                 </Text>
                             </Button>
                             <HStack spacing="4">
                                 <Button
-                                onClick={adicionarDespesa}
+
                                     type="submit"
                                     bg="#191970"
                                 >
@@ -182,6 +184,28 @@ export default function AdicionarDespesa() {
                                         valor: parseFloat(event.target.value),
                                     })
                                 }
+                            />
+                            <Select
+                                bg='#DFE3E8'
+                                alignContent={'center'}
+                                h="50px"
+                                colorScheme={'whiteAlpha.900'}
+                                id="tag"
+                                name="moeda"
+                                autoComplete="Tag"
+                                placeholder="Selecione a tag"
+                                focusBorderColor="brand.400"
+                                shadow="sm"
+                                size="sm"
+                                w="full"
+                                rounded="md"
+                                isClearable
+                                isDisabled={isLoading}
+                                isLoading={isLoading}
+                                onChange={(newValue) => setValue(newValue)}
+                                onCreateOption={handleCreate}
+                                options={options}
+                                value={value}
 
                             />
                         </SimpleGrid>
@@ -198,17 +222,47 @@ export default function AdicionarDespesa() {
                                 alignContent={'center'}
                                 h="50px"
                                 colorScheme={'whiteAlpha.900'}
-                                id="category"
-                                name="categoria"
-                                autoComplete="categoria"
-                                placeholder="Selecione a categoria"
+                                id="currency"
+                                name="moeda"
+                                autoComplete="Moeda"
+                                placeholder="Selecione o tipo de moeda"
                                 focusBorderColor="brand.400"
                                 shadow="sm"
                                 size="sm"
                                 w="full"
                                 rounded="md"
                                 onChange={handleChangeSelectMoeda("moeda")}
+                                options={optionsSelectMoeda}
+
                             />
+                            <StatGroup>
+                                <Stat
+                                    w={280}
+                                    borderRadius={10}
+                                    border="1.5px solid lightgray"
+                                    p={5}
+                                    mt="30"
+                                    mx="2"
+                                >
+                                    <StatLabel>Valor Despesa</StatLabel>
+                                    <StatNumber>$ {!isNaN(despesa.valor) ? despesa.valor : 0}</StatNumber>
+                                </Stat>
+
+                                <ArrowForwardIcon w={6} h={6} mt="70" />
+
+                                <Stat
+                                    w={280}
+                                    borderRadius={10}
+                                    border="1.5px solid lightgray"
+                                    p={5}
+                                    mt="30"
+                                    mx="2"
+                                >
+                                    <StatLabel>Valor em REAL (R$)</StatLabel>
+                                    <StatNumber>R$ {!isNaN(valorConvertido) ? valorConvertido : 0}</StatNumber>
+                                </Stat>
+                            </StatGroup>
+
 
 
 

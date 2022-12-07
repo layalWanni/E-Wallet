@@ -5,11 +5,79 @@ import WithSubnavigation from "../../src/components/navigation";
 import SimpleSidebar from "../../src/components/schiBar";
 import { Flex } from "@chakra-ui/react";
 import Pagination from "@choc-ui/paginator";
-
-
-
+import { useDispatch, useSelector } from "react-redux";
+import { changeDespesas, returnAllDespesas } from "../../store/outcomesSlice";
+import { changeCurrencies, returnAllCurrenties } from "../../store/currenciesData";
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/router'
+import { ToastContainer, toast } from "react-toastify";
+import { findAllDespesas } from "../api/despesas";
 
 export default function ListaDespesas() {
+    const router = useRouter()
+
+    const despesas = useSelector(returnAllDespesas);
+    const currenciesData = useSelector(returnAllCurrenties);
+    
+    const dispatch = useDispatch();
+    const [totalDespesa, setTotalDespesa] = useState(0);
+    
+  
+    function trataDadosApi(data){
+      var currencies = {};
+      Object.keys(data).map((currencyKey) => (
+          currencies[currencyKey] = {
+            code: data[currencyKey].code,
+            bid: parseFloat(data[currencyKey].bid),
+            label: `${
+              String(data[currencyKey].name).split("/")[0]
+            } ( ${currencyKey} )  `,
+          }
+        )
+      )
+      return currencies;
+    }
+    
+  async function getCurrencies() {
+    try {
+      const response = await axios.get("https://economia.awesomeapi.com.br/json/all");
+      if (response.status === 200){
+        dispatch(changeCurrencies(trataDadosApi(response.data)));
+        toast.success("Dados Atualizados com Sucesso");
+      }else{
+        toast.error("Erro ao Consumir a API");
+      }
+    } catch (err) {
+      toast.error(err);
+    }
+  }
+  useEffect(() => {
+    if (!localStorage.getItem("isLogged")) {
+        router.push("/despesas");
+    } else {
+      const lista_despesas = findAllDespesas();
+      dispatch(changeDespesas(lista_despesas));
+    }
+    getCurrencies();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  function getValorCotacao(moeda, valor){
+    var valorCotacao = currenciesData[moeda].bid.toFixed(2)
+    return parseFloat((valor * valorCotacao).toFixed(2))
+  }
+
+  useEffect(() => {
+    setTotalDespesa(
+      despesas
+        .reduce((acc, curr) => {
+          !curr.moeda.includes('REAL') ? acc += getValorCotacao(curr.moeda, curr.valor) : acc += curr.valor;
+          return acc;
+        }, 0)
+        .toFixed(2)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [despesas]);
+
 
     return (
         <>
@@ -27,6 +95,7 @@ export default function ListaDespesas() {
                             </Heading>
 
                             <Button
+                                onClick={() => router.push('/despesas/criar')}
                                 m={5}
                                 as="a"
                                 size="sm"
@@ -59,22 +128,25 @@ export default function ListaDespesas() {
 
                             <Tbody>
 
-                                {/* {data.map((endereco) => ( */}
-                                <Tr>
+                            {despesas.map((despesa) => (
+                                <Tr key={despesa.id}>
                                     <Td> </Td>
                                     <Td>
-                                        <Text fontSize={14} color={'whiteAlpha.900'}></Text>
+                                        <Text fontSize={14} color={'whiteAlpha.900'}>{despesa.valor}</Text>
 
                                     </Td>
                                     <Td>
-                                        <Text fontSize={14} color={'whiteAlpha.900'}></Text>
+                                        <Text fontSize={14} color={'whiteAlpha.900'}>{despesa.descricao}</Text>
                                     </Td>
                                     <Td>
-                                        <Text fontSize={14} color={'whiteAlpha.900'}></Text>
+                                        <Text fontSize={14} color={'whiteAlpha.900'}>{despesa.moeda}</Text>
+                                    </Td>
+                                    <Td>
+                                        <Text fontSize={14} color={'whiteAlpha.900'}>{despesa.metodo}</Text>
                                     </Td>
 
                                 </Tr>
-                                {/* ))} */}
+                               ))}
                             </Tbody>
                         </Table>
                     </Box>
