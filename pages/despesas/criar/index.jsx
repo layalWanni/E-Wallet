@@ -103,8 +103,7 @@ export default function AdicionarDespesa() {
     };
 
     useEffect(() => {
-        getDadosApi()
-        /
+        getDadosApi();
     }, [])
 
     useEffect(() => {
@@ -117,14 +116,15 @@ export default function AdicionarDespesa() {
         
     }, [despesa.valor])
 
-    useEffect(() => {
-        if (despesa.moeda && despesa.moeda !== 'REAL' && despesa.valor) {
-            var valorCotacao = dadosApi[despesa.moeda].bid.toFixed(2)
-            setValorConvertido((despesa.valor * valorCotacao).toFixed(2))
-        } else if (despesa.moeda === 'REAL' && despesa.valor) {
-            setValorConvertido(despesa.valor.toFixed(2))
-
-    }, [despesa.moeda])
+    useEffect(()=>{
+        if (despesa.moeda && despesa.moeda !== 'REAL' && despesa.valor){
+          var valorCotacao = dadosApi[despesa.moeda].bid.toFixed(2)
+          setValorConvertido((despesa.valor * valorCotacao).toFixed(2))
+        }else if (despesa.moeda === 'REAL' && despesa.valor){
+          setValorConvertido(despesa.valor.toFixed(2))
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [despesa.moeda])
 
     return (
         <div><SimpleSidebar>
