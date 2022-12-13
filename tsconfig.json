@@ -15,7 +15,7 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "store/index.js", "pages/despesas/criar/index.jsx", "pages/despesas/index.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "store/index.js", "pages/despesas/criar/index.jsx", "pages/despesas/index.jsx", "stories/pages/ storybook/preview.js"],
   "exclude": ["node_modules"]
   
 }

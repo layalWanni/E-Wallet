@@ -9,7 +9,9 @@
     "lint": "next lint",
     "test": "jest --watchAll --coverage",
     "predev:instrumented": "rm -rf .nyc_output coverage .next",
-    "dev:instrumented": "INSTRUMENT_CODE=1 next dev"
+    "dev:instrumented": "INSTRUMENT_CODE=1 next dev",
+    "storybook": "start-storybook -p 6006 -s ./public",
+    "build-storybook": "build-storybook -s public"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.12",
@@ -48,10 +50,21 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.5",
     "@cypress/code-coverage": "^3.10.0",
+    "@storybook/addon-actions": "^6.5.14",
+    "@storybook/addon-essentials": "^6.5.14",
+    "@storybook/addon-interactions": "^6.5.14",
+    "@storybook/addon-links": "^6.5.14",
+    "@storybook/builder-webpack5": "^6.5.14",
+    "@storybook/manager-webpack5": "^6.5.14",
+    "@storybook/react": "^6.5.14",
+    "@storybook/testing-library": "^0.0.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
+    "babel-loader": "^8.3.0",
     "cypress": "^11.2.0",
+    "eslint-plugin-storybook": "^0.6.8",
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^29.3.1"
   }
